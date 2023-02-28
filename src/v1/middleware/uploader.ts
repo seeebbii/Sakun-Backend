@@ -27,6 +27,18 @@ const imageStorage = multer.diskStorage({
 
 });
 
+const videoStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname + '/../uploads/videos'))
+    },
+
+    filename: function (req: any, file: any, cb: any) {
+        let filename = file.originalname.toLowerCase().split(' ').join('-')
+        cb(null, Date.now() + "-" + filename)
+    },
+
+});
+
 const uploadAudioMiddleWare = multer(
     {
         storage: audioStorage,
@@ -56,9 +68,24 @@ const uploadImagesMiddleWare = multer(
     }
 );
 
+const uploadVideosMiddleWare = multer(
+    {
+        storage: videoStorage,
+        fileFilter: (req, file, cb) => {
+            console.info(`[Upload Videos] file type: ${file.mimetype}`)
+            if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+                cb(null, true);
+            } else {
+                cb(null, false);
+            }
+        }
+    }
+);
+
 const uploader = {
     uploadAudioMiddleWare: uploadAudioMiddleWare,
-    uploadImagesMiddleWare: uploadImagesMiddleWare
+    uploadImagesMiddleWare: uploadImagesMiddleWare,
+    uploadVideosMiddleWare: uploadVideosMiddleWare,
 }
 
 export default uploader;

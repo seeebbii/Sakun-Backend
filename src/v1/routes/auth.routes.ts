@@ -1,29 +1,19 @@
 import express from 'express'
-import multer from 'multer';
-import path from 'path'
-import fs from 'fs'
 
 const authController = require('../controller/auth/auth.controller');
 const router = express.Router();
 
+router.get('/', (req, res, next) => {
+    res.json({
+        "message" : "Welcome to auth endpoint"
+    })
+})
 
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+router.post('/register', authController.register);
 
-        cb(null, path.join(__dirname + '/../uploads'))
-    },
-    
-    filename: function (req: any, file: any, cb: any) {
-        console.log(file)
-        cb(null, Date.now() + "-" + file.originalname )
-    }
-});
+router.post('/login', authController.login);
 
-const upload = multer({storage: storage,});
-
-
-
-router.post('/', upload.single('file'),  authController.test);
+router.post('/update-user-profile', authController.updateUserProfile);
 
 export default router;

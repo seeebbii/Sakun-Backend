@@ -33,6 +33,7 @@ if(!fs.existsSync(path.join(__dirname + '/v1/uploads'))){
     fs.mkdirSync(path.join(__dirname + '/v1/uploads'))
     fs.mkdirSync(path.join(__dirname + '/v1/uploads/images'))
     fs.mkdirSync(path.join(__dirname + '/v1/uploads/audio'))
+    fs.mkdirSync(path.join(__dirname + '/v1/uploads/videos'))
 }
 
 app.use('/v1/uploads', express.static(__dirname + "/v1/uploads"))
@@ -42,6 +43,12 @@ app.use('/v1/uploads', express.static(__dirname + "/v1/uploads"))
 app.get('/api', (req, res, next) => {
     res.json({
         'message' : `Server is running at Port: ${config.server.port}`,
+    }).end()
+})
+
+app.get('/api/V1', (req, res, next) => {
+    res.json({
+        'message' : `This is V1 endpoint`,
     }).end()
 })
 
